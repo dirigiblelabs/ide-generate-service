@@ -5,6 +5,7 @@ const templateEngines = require("platform/v4/template-engines");
 exports.generateFiles = function (model, parameters, templateSources) {
     let generatedFiles = [];
 
+    let feedModels = model.entities.filter(e => e.feedUrl);
     let uiManageModels = model.entities.filter(e => e.layoutType === "MANAGE" && e.type === "PRIMARY");
     let uiListModels = model.entities.filter(e => e.layoutType === "LIST" && e.type === "PRIMARY");
     let uiManageMasterModels = model.entities.filter(e => e.layoutType === "MANAGE_MASTER" && e.type === "PRIMARY");
@@ -32,6 +33,9 @@ exports.generateFiles = function (model, parameters, templateSources) {
             switch (template.collection) {
                 case "models":
                     generatedFiles = generatedFiles.concat(generateCollection(content, template, model.entities, parameters));
+                    break;
+                case "feedModels":
+                    generatedFiles = generatedFiles.concat(generateCollection(content, template, feedModels, parameters));
                     break;
                 case "uiManageModels":
                     generatedFiles = generatedFiles.concat(generateCollection(content, template, uiManageModels, parameters));
