@@ -60,6 +60,8 @@ function onGenerateModel(context, request, response) {
     let template = require(templatePayload.template);
     let parameters = templatePayload.parameters;
     parameters.projectName = project;
+    parameters.workspaceName = workspace;
+    parameters.filePath = path;
 
     let generatedFiles = template.generate(model, parameters);
 
@@ -72,7 +74,6 @@ function onGenerateModel(context, request, response) {
     lifecycle.publish(user.getName(), workspace, project);
 
     response.setStatus(response.CREATED);
-    response.println(JSON.stringify(model));
 
     response.flush();
     response.close();
@@ -91,7 +92,7 @@ function getModel(workspaceName, projectName, path) {
     if (!model.exists()) {
         throw new BadRequestError(`Model file '${path}' does not exist in Project '${projectName}' in Workspace '${workspaceName}'.`);
     }
-    return JSON.parse(model.getText()).model;
+    return model.getText();
 }
 
 function cleanGenFolder(workspaceName, projectName) {
