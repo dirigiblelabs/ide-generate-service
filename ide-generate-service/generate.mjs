@@ -126,6 +126,11 @@ function createFile(workspaceName, projectName, path, content) {
             folder = folder.getFolder(pathSegments[i]);
         }
     }
-    let file = folder.createFile(fileName);
+    let file = null;
+    if (folder == null) {
+        file = project.createFile(fileName);
+    } else {
+        file = folder.createFile(fileName);
+    }
     file.setText(content);
 }
